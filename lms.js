@@ -33,7 +33,6 @@ class LMS{
         } else {
             let arr = [];
             for (let value of this.m.values()) arr.push(value);
-            console.log(arr);
             return arr;
         }
     }
@@ -73,6 +72,6 @@ const history = new Subject({
 lms.add(history);
 lms.add(history2);
 
+console.log(history);
 
 lms.remove(history);
-lms.readAll();
