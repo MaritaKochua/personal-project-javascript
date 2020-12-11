@@ -42,9 +42,11 @@ class Pupils{
         if(!this.m.has(id) || this.m.get(id) === undefined) {
             throw new Error("Id does not exist");
         } 
-        dataValidator(updated);
-        updated.id = id;
-        this.m.set(id, updated);
+        let newUser = this.m.get(id);
+        let newkey = Object.keys(updated)[0];
+        let value = Object.values(updated)[0]; 
+        newUser[newkey] = value;
+        this.m.set(id, newUser)
         return this.m.get(id);
     }
     remove(id){
@@ -77,3 +79,7 @@ const data = {
 
 const pupils = new Pupils();
 
+const pupil = pupils.add(data);
+
+
+export{pupils, pupil}

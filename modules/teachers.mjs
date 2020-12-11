@@ -134,3 +134,5 @@ const teacherId = teachers.add(data);
 teachers.read(teacherId);
 teachers.update(teacherId, updatedProfile);
 teachers.read(teacherId);
+
+export{teachers, teacherId}

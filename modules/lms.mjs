@@ -75,3 +75,5 @@ lms.add(history2);
 console.log(history);
 
 lms.remove(history);
+
+export{lms};
