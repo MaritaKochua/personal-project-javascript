@@ -35,7 +35,7 @@ class Pupils{
         return pupil
     }
     read(id){
-        console.log(this.m.get(id));
+        // console.log(this.m.get(id));
         return this.m.get(id)
     }
     update(id, updated){
@@ -54,7 +54,7 @@ class Pupils{
             throw new Error ('user does not exist');
         } else{
             this.m.delete(id);
-            console.log('deleted');
+            // console.log('deleted');
             return true;
         }
     }
@@ -62,8 +62,8 @@ class Pupils{
 
 const data = {
     "name": {
-      "first": "string",
-      "last": "string"
+      "first": "Marita",
+      "last": "Kochua"
     },
     "image": "string",
     "dateOfBirth": "string", // format date

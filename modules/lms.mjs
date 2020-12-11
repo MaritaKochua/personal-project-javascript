@@ -11,7 +11,7 @@ class LMS{
         if (typeof sub !== 'object'){
             throw new Error("must be an object");
         } else{
-            this.m.set(sub.title, sub);
+            this.m.set(sub.subjectId, sub);
         }
     }
     remove(sub){
@@ -19,12 +19,12 @@ class LMS{
             throw new Error ('user does not exist');
         } else{
             this.m.delete(sub);
-            console.log('deleted');
+            // console.log('deleted');
             return true;
         }
     }
     verify(sub){
-            console.log(this.m.has(sub.title))
+            // console.log(this.m.has(sub.title))
             return this.m.has(sub);
     }
     readAll(x){
@@ -72,8 +72,7 @@ const history = new Subject({
 lms.add(history);
 lms.add(history2);
 
-console.log(history);
+// console.log(history);
 
-lms.remove(history);
 
-export{lms};
+export{lms, history};

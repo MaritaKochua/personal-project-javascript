@@ -16,7 +16,6 @@ function dataValidator(teacher){
         teacher.emails[0].primary === undefined ||
         typeof teacher.emails[0].primary !== 'boolean'
         ){
-        console.log(typeof teacher.emails[0].email);
         throw new Error("Teacher must have a valid email address");
     } else if(
         teacher.phones === undefined || 
@@ -46,8 +45,11 @@ class Teachers{
         return teacher.id
     }
     read(id){
-        console.log(this.m.get(id));
-        return this.m.get(id)
+        if(!this.m.has(id)){
+          throw new Error("Teacher does not exist");
+        } else{
+          return this.m.get(id)
+        }
     }
     update(id, updated){
         if(!this.m.has(id) || this.m.get(id) === undefined) {
@@ -63,7 +65,7 @@ class Teachers{
             throw new Error ('user does not exist');
         } else{
             this.m.delete(id);
-            console.log(deleted);
+            // console.log(deleted);
             return true;
         }
     }
@@ -121,8 +123,7 @@ const updatedProfile = {
     "sex": "female", // male or female
     "subjects": [
       {
-        "subject": "math",
-        "subject": 'notmath'
+        "subject": "history",
       }
     ]
   }

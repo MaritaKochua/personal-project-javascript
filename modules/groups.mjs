@@ -10,6 +10,7 @@ class Groups{
         } else{
             let group = {room};
             group.id = (0|Math.random()*6.04e7).toString(36);
+            group.pupils = new Map();
             this.m.set(group.id, group);
             return group.id
         }
@@ -19,12 +20,12 @@ class Groups{
             throw new Error ('Group does not exist');
         } else{
             this.m.delete(id);
-            console.log(deleted);
+            // console.log(deleted);
             return true;
             }
     }
     read(id){
-        console.log(this.m.get(id));
+        // console.log(this.m.get(id));
         return this.m.get(id)
     }
     readAll(x){
@@ -33,7 +34,7 @@ class Groups{
         } else {
             let arr = [];
             for (let value of this.m.values()) arr.push(value);
-            console.log(arr);
+            // console.log('arr');
             return arr;
         }
     }
@@ -53,7 +54,7 @@ class Groups{
             throw new Error ('Group does not exist');
         } else{
             let group = this.m.get(id);
-            group[pupil.id] = pupil;
+            group.pupils.set(pupil.id, pupil);
         }
     }
     removePupil(id){
@@ -61,7 +62,7 @@ class Groups{
             throw new Error ('Group does not exist');
         } else{
             this.m.delete(id);
-            console.log(deleted);
+            // console.log(deleted);
             return true;
         }
     }
@@ -78,6 +79,6 @@ groups.update(groupId, {
     room: 237
   });
 
-groups.readAll();
+console.log(groups.readAll());
 
-export{ groups };
+export{ groups, pupil, groupId };
