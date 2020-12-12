@@ -9,14 +9,23 @@ class Gradebooks{
         this.m = new Map();
     }
     add(level, groupId){
+        for(let value of this.m.values()){
+            if(value.group.id === groupId){
+                throw new Error("This group already has a journal!");
+            }
+        }
         if (typeof level !== 'number' || typeof level === undefined){
             throw new Error("Must add level of grade");
-        } else{
-            
+        } 
+        // else if(this.m.get.group.has(groupId)){
+
+        // } 
+        else{
             const group = this.groups.read(groupId);
             let journal = {level, group};
             journal.id = (0|Math.random()*6.04e7).toString(36);
             this.m.set(journal.id, journal);
+            for(let value of group.pupils.values()){ value.records = []};
             return journal.id;
         }
     }
@@ -35,7 +44,8 @@ class Gradebooks{
         else if( record.teacherId === undefined || !this.teachers.read(record.teacherId)){
             throw new Error ('Teacher does not exist');
         }
-        else if(record.subjectId === undefined || !this.lms.verify(record.subjectId)){
+        else if(record.subjectId === undefined || record.subjectId !== this.lms.m.get(record.subjectId).id){
+            console.log(this.lms.verify(record.subjectId));
             throw new Error ('Subject does not exist');
         } else if(record.mark === undefined || typeof record.mark !== 'number'){
             throw new Error (`The mark must be a number!`)
@@ -49,7 +59,6 @@ class Gradebooks{
         } else if(subject.lessons < record.lesson){
             throw new Error (`There's only ${subject.lessons} lessons in class! `)
         }
-        pupils.get(record.pupilId).records = [];
         const newRecord = {
             teacher: teacher.name.first + " " + teacher.name.last,
             subject: this.lms.m.get(record.subjectId).title,
@@ -61,12 +70,11 @@ class Gradebooks{
     read(gradebookId, pupilId){
         const pupils = this.m.get(gradebookId).group.pupils;
         const grades = pupils.get(pupilId).records;
-        const records = {
+        const newRecord = {
             name: pupils.get(pupilId).name.first + " " + pupils.get(pupilId).name.last,
             records: grades
-        }
-        console.log(records);
-        return records;
+        };
+        return newRecord;
     }
     readAll(gradebookId){
         if(!this.m.has(gradebookId) || gradebookId === undefined) {
@@ -74,7 +82,10 @@ class Gradebooks{
         } else {
             const pupils = this.m.get(gradebookId).group.pupils;
             let arr = [];
-            for (let value of pupils.values()) arr.push(value);
+            for (let key of pupils.keys()){
+                let temp = this.read(gradebookId, key);
+                arr.push(temp);
+            };
             return arr;
         }
     }
@@ -85,6 +96,7 @@ const pupilId = pupil.id;
 const level = 1;
 const gradebooks = new Gradebooks(groups, teachers, lms);
 const gradebookId = gradebooks.add(level, groupId);
+// const gradebookId2 = gradebooks.add(3, groupId);
 
 const record = {
     pupilId: pupilId,
@@ -93,8 +105,19 @@ const record = {
     lesson: 1,
     mark: 9
   };
-
+  const record2 = {
+    pupilId: pupilId,
+    teacherId: teacherId,
+    subjectId: history.id,
+    lesson: 10,
+    mark: 9
+  };
   gradebooks.addRecord(gradebookId, record);
+  gradebooks.addRecord(gradebookId, record2);
+
   const oliver = gradebooks.read(gradebookId, pupilId);
 
-  const students = gradebooks.readAll(gradebookId); // It will return the array of objects
+  const students = gradebooks.readAll(gradebookId);
+  console.log(students);
+
+console.log(students[0]);

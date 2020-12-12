@@ -9,14 +9,14 @@ class LMS{
             }
         };
         if (typeof sub !== 'object'){
-            throw new Error("must be an object");
+            throw new Error("Entry must be an object");
         } else{
             this.m.set(sub.subjectId, sub);
         }
     }
     remove(sub){
         if(!this.m.has(sub.title) || this.m.get(sub.title) === undefined) {
-            throw new Error ('user does not exist');
+            throw new Error ('This subject does not exist');
         } else{
             this.m.delete(sub);
             // console.log('deleted');
@@ -24,8 +24,16 @@ class LMS{
         }
     }
     verify(sub){
-            // console.log(this.m.has(sub.title))
-            return this.m.has(sub);
+            if(sub === undefined || typeof sub !== 'object'){
+                throw new Error ('The entry for verifying is incorrect')
+            } 
+            for (let value of this.m.values()) {
+                if (value.title.toLowerCase()  === sub.title.toLowerCase() ){
+                    return true
+                } else{
+                    return false
+                }
+            };
     }
     readAll(x){
         if(!!x) {
@@ -38,6 +46,7 @@ class LMS{
     }
 }
 
+// create subject
 class Subject{
   constructor(subject){
       if(
@@ -59,20 +68,32 @@ class Subject{
 
 const lms = new LMS();
 
+// subjects
+
 const history = new Subject({
     title: 'History',
     lessons: 24
   });
-  const history2 = new Subject({
+
+  const arts = new Subject({
     title: 'Arts',
-    lessons: 24
+    lessons: 2
+  });
+  
+  const math = new Subject({
+    title: 'Math',
+    lessons: 60
   });
 
-// // lms.remove(history);
-lms.add(history);
-lms.add(history2);
+  const notMath = new Subject({
+    title: 'notMath',
+    lessons: 10
+  });
+  
+    lms.add(history);
+    lms.add(arts);
+    lms.add(math);
 
-// console.log(history);
 
 
-export{lms, history};
+export{ lms, history };

@@ -1,4 +1,5 @@
 function dataValidator(teacher){
+  const date = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
     if (
         (teacher.name.first === undefined || typeof teacher.name.first !== 'string') ||
         (teacher.name.last === undefined || typeof teacher.name.last !== 'string')
@@ -6,9 +7,11 @@ function dataValidator(teacher){
         throw new Error("Teacher must have a full name");
     } else if(teacher.image === undefined || typeof teacher.image !== 'string'){
         throw new Error("Teacher must have an image");
-    } else if(teacher.dateOfBirth === undefined || typeof teacher.dateOfBirth !== 'string'){
+    } else if(
+      teacher.dateOfBirth === undefined || 
+      typeof teacher.dateOfBirth !== 'string' ||
+      !(date.test(teacher.dateOfBirth))){
         throw new Error("You must enter a valid date of birth");
-        // add validator for date
     } else if(
         teacher.emails === undefined || 
         teacher.emails[0].email === undefined ||
@@ -25,13 +28,41 @@ function dataValidator(teacher){
         typeof teacher.phones[0].primary !== 'boolean'
         ){
         throw new Error("Teacher must have a valid phone number");
-    } else if(teacher.sex === 'male' || typeof teacher.sex === 'female'){
+    } else if(
+            teacher.sex.toLowerCase() !== 'male' && 
+            teacher.sex.toLowerCase() !== 'female'
+            ){
         throw new Error("Teacher must have a sex chosen");
-    } else if(teacher.subjects === undefined || typeof teacher.subjects[0].subject !== 'string'){
+    } else if(
+        teacher.subjects[0].subject === undefined ||
+        teacher.subjects[0].subject === "" ||
+        teacher.subjects === undefined || 
+        typeof teacher.subjects[0].subject !== 'string'){
         throw new Error("Teacher must have a subject");
     } else if(typeof teacher.description !== 'string' && teacher.description !== undefined){
         throw new Error("Description must be text");
     }
+
+    let primaryCount = 0;
+    for(let i = 0; i < teacher.emails.length; i++){
+      if (teacher.emails[i].primary === true){
+        primaryCount++
+      }
+    }
+    if (primaryCount > 1){
+      throw new Error("You can't have more than one primary email!");
+    }
+
+    let primaryCount2 = 0;
+    for(let i = 0; i < teacher.phones.length; i++){
+      if (teacher.phones[i].primary === true){
+        primaryCount2++
+      }
+    }
+    if (primaryCount2 > 1){
+      throw new Error("You can't have more than one primary phone numbers!");
+    }
+
 }
 
 class Teachers{
@@ -65,75 +96,45 @@ class Teachers{
             throw new Error ('user does not exist');
         } else{
             this.m.delete(id);
-            // console.log(deleted);
             return true;
         }
     }
 }
 
+
+
 const teachers = new Teachers();
 
-const data = {
-  "name": {
-    "first": "Marita",
-    "last": "Kochua"
-  },
-  "image": 'url',
-  "dateOfBirth": "string", 
-  "emails": [
-    {
-      "email": "maritakochua@gmial.com",
-      "primary": true,
-    }
-  ],
-  "phones": [
-    {
-      "phone": "5694598382",
-      "primary": true
-    }
-  ],
-  "sex": "female", // male or female
-  "subjects": [
-    {
-      "subject": "math",
-      "subject": 'notmath'
-    }
-  ]
-}
+// teachers
 
-const updatedProfile = {
+const data = {
     "name": {
-      "first": "NotMarita",
-      "last": "Kochua"
+      "first": "Lasha",
+      "last": "GvariArmaxsovs"
     },
     "image": 'url2',
-    "dateOfBirth": "st2ring", 
+    "dateOfBirth": "10/02/1990", 
     "emails": [
       {
-        "email": "maritakochua@gmial.com",
+        "email": "someemail@gmail.com",
         "primary": true,
       }
     ],
     "phones": [
       {
-        "phone": "no",
+        "phone": "45253242",
         "primary": true
       }
     ],
-    "sex": "female", // male or female
+    "sex": "male", // male or female
     "subjects": [
       {
-        "subject": "history",
+        "subject": "hisTory",
       }
     ]
   }
 
+
 const teacherId = teachers.add(data);
 
-// teachers.read(teacherId)
-
-teachers.read(teacherId);
-teachers.update(teacherId, updatedProfile);
-teachers.read(teacherId);
-
-export{teachers, teacherId}
+export {teachers, teacherId};
